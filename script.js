@@ -4,6 +4,11 @@
 // Hämta element ur DOM
 const ajaxButton = document.querySelector('#ajax-button')
 const ajaxPara = document.querySelector('#ajax-response')
+const exercise1 = {
+	btn: document.querySelector('#btn-exercise1'),
+	output: document.querySelector('#exercise1-output'),
+	list: document.querySelector('#exercise1-advice-list')
+}
 
 // Variabler och state
 const baseUrl = 'https://forverkliga.se/JavaScript/api/simple.php'
@@ -31,6 +36,40 @@ ajaxButton.addEventListener('click', async () => {
 	// Presentera datan för användaren
 	ajaxPara.innerHTML = `${data.message} <br/> The request took ${diff} ms to execute.`
 })
+
+
+/*
+1a Gör en webbapp som använder AJAX för att leverera "fortune cookies". Appen ska skicka ett GET request med fetch när man klickar på en button på sidan. Responsen ska du skriva ut med console.log.
+Skicka till: https://api.adviceslip.com/advice 
+API:et förväntas svara med ett objekt: { slip: { slip_id, advice } }
+
+1c Gör så att tidigare tips sparas i en lista. Man ska kunna se deras id och själva texten.
+*/
+exercise1.btn.addEventListener('click', async () => {
+	const url = 'https://api.adviceslip.com/advice'
+
+	const response = await fetch(url)
+	const data = await response.json()  // inte samma som JSON
+
+	// const advice = data.slip.advice
+	// const id = data.slip.id
+	const { advice, id } = data.slip
+	console.log('Data from advice API: ', data)
+	console.log('Advice: ', advice)
+	
+	exercise1.output.innerText = advice
+
+	let idSpan = document.createElement('span')
+	let adviceSpan = document.createElement('span')
+	idSpan.innerText = id
+	adviceSpan.innerText = advice
+	let li = document.createElement('li')
+	li.append(idSpan)
+	li.append(adviceSpan)
+	exercise1.list.append(li)
+})
+
+
 
 
 // När man hovrar över fetch med musen säger VS Code:
