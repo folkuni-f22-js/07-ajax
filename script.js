@@ -13,8 +13,11 @@ const safe = {
 	btn: document.querySelector('#safe-button'),
 	output: document.querySelector('#safe-output')
 }
-	// < button id = "safe-button" > Skicka request </button>
-	// 	<p id="safe-output"></
+const sunset = {
+	button: document.querySelector('#sunset-button'),
+	answer: document.querySelector('#sunset-answer')
+}
+
 
 // Variabler och state
 const baseUrl = 'https://forverkliga.se/JavaScript/api/simple.php'
@@ -100,6 +103,30 @@ safe.btn.addEventListener('click', async () => {
 	// Be användaren försöka igen om en stund - kanske bäst
 	// Meddelande: "Failed to load" - korrekt, men hjälper inte användaren. Undvik!
 })
+
+
+sunset.button.addEventListener('click', async () => {
+	// Övning 1: gör koden säkrare (try/catch osv.)
+	// Övning 2: gör så att användaren kan ange andra koordinater
+
+	// Karlstad:  lat: 59.3793, long: 13.503569
+	// Genom att använda variabler blir koden flexiblare - Abstraction
+	const lat = '59.3793'
+	const lng = '13.503569'
+	// Läs API:ets dokumentation för att veta vilken URL man ska använda, och vilka parametrar (querystring)
+	const response = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`)
+	const data = await response.json()
+	// Använd console.log för att se hur datan ser ut
+	// console.log('Sunset data: ', data)
+
+	// Plocka ut den relevanta informationen. Bearbeta den och presentera för användaren.
+	const sunsetTime = data.results.sunset
+	let onlyTime = sunsetTime.substring(11,19)
+	sunset.answer.innerText = `Solen går ner kl ${onlyTime} idag i Karlstad. (Sommartid och tidszon ej medräknad.)`
+})
+
+
+
 /*
 JSON är ett objekt { parse, stringify } som används för att
 JSON.parse <- omvandla en sträng till JS-objekt
